@@ -1,24 +1,13 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext } from "react";
+import useTasks from "../hooks/useTasks";
 
 export const GlobalContext = createContext();
 
 export function GlobalContextProvider({ children }) {
-    const [tasks, setTasks] = useState([]);
-
-    useEffect(() => {
-        fetch(`${import.meta.env.VITE_BE_APP}/tasks`)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setTasks(data);
-            })
-            .catch((error) => {
-                console.error("Errore nel recupero dei task:", error);
-            });
-    }, []);
+    const { tasks, addTask, removeTask, updateTask } = useTasks();
 
     return (
-        <GlobalContext.Provider value={{ tasks, setTasks }}>
+        <GlobalContext.Provider value={{ tasks, addTask, removeTask, updateTask }}>
             {children}
         </GlobalContext.Provider>
     );
