@@ -6,7 +6,7 @@ export default function NotFound() {
             <h1>404</h1>
             <h3>Page not found</h3>
 
-            <Link to="/" className="btn btn-primary">
+            <Link to="/tasks" className="btn btn-primary">
                 Back
             </Link>
         </div>

@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AddTask from "./pages/AddTask";
 import TaskList from "./pages/TaskList";
 import NotFound from './pages/NotFound';
+import TaskDetail from './pages/TaskDetail'
 
 import DefaultLayout from "./layouts/DefaultLayout";
 import { GlobalContext, GlobalContextProvider } from "./contexts/GlobalContext";
@@ -17,7 +18,10 @@ function App() {
           <div className="container mt-4">
             <Routes>
               <Route element={<DefaultLayout />}>
-                <Route index element={<TaskList />} />
+                <Route path="/task">
+                  <Route index element={<TaskList />} />
+                  <Route path=":id" element={<TaskDetail />} />
+                </Route>
                 <Route path="/addtask" element={<AddTask />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
