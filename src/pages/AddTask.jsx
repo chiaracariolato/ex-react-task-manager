@@ -47,6 +47,7 @@ export default function AddTask() {
 
     return (
         <>
+
             <div className="container col-md-8 order-md-1">
                 <h4 className="mb-3">Create new task</h4>
                 <form onSubmit={submit}>
