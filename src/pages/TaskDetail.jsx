@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { useParams, Navigate } from 'react-router-dom'
 
-export default function AddTask() {
-    const { tasks } = useContext(GlobalContext);
+export default function TaskDetail() {
+    const { tasks, removeTask } = useContext(GlobalContext);
     const { id } = useParams();
 
     const task = tasks.find(task => task.id == id);
@@ -12,7 +12,16 @@ export default function AddTask() {
         return <Navigate to="/task" />;
     }
 
-    function deleteTask() {
+    async function deleteTask(id) {
+
+        try {
+            await removeTask(id);
+            alert("Task deleted successfully!");
+            <Navigate to="/task" />;
+        } catch (error) {
+            alert(error.message);
+        }
+
         console.log('task deleted')
     }
 
@@ -33,10 +42,10 @@ export default function AddTask() {
 
                 </div>
                 <div className="card-body">
-                    <h5 className="card-title">{task.name}</h5>
+                    <h5 className="card-title">{task.title}</h5>
                     <p className="card-text">{task.description}</p>
                     <p>{new Date(task.createdAt).toLocaleString("it-IT")}</p>
-                    <button className="btn btn-primary" onClick={deleteTask}>
+                    <button className="btn btn-primary" onClick={() => deleteTask(task.id)}>
                         Delete
                     </button>
                 </div>

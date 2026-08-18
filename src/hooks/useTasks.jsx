@@ -37,7 +37,24 @@ function useTasks() {
         return data.task;
     };
 
-    const removeTask = () => { };
+    const removeTask = async (taskId) => {
+        const response = await fetch(`${import.meta.env.VITE_BE_APP}/tasks/${taskId}`, {
+            method: "DELETE",
+        })
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+
+        const deletedTask = tasks.find(task => task.id === taskId);
+
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id != taskId));
+
+        return deletedTask;
+
+    };
 
     const updateTask = () => { };
 
