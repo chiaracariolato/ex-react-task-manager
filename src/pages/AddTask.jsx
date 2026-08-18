@@ -1,4 +1,5 @@
-import { useState, useRef, useMemo } from "react"
+import { useState, useRef, useMemo, useContext } from "react"
+import { GlobalContext } from "../contexts/GlobalContext";
 
 export default function AddTask() {
 
@@ -6,32 +7,43 @@ export default function AddTask() {
     const descriptionRef = useRef('');
     const statusRef = useRef('To do');
 
+    const { addTask } = useContext(GlobalContext);
+
     const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
 
     const isNameValid = useMemo(() => {
-        const charsNotValid = name.split("").every(char =>
+        const charsNotValid = name.split("").some(char =>
             symbols.includes(char.toLowerCase()))
 
         return !charsNotValid && name.length > 0
     }, [name])
 
-    const submit = (e) => {
-        e.preventDefault()
-        if (isNameValid &&
-            descriptionRef.current.value &&
-            statusRef.current.value
+    const submit = async (e) => {
+        e.preventDefault();
+
+        if (!isNameValid ||
+            !descriptionRef.current.value ||
+            !statusRef.current.value
         ) {
-            console.log(
-                `Task name: ${name}
-            Description: ${descriptionRef.current.value}
-            Status: ${statusRef.current.value}
-            `
-            )
-        } else {
-            alert("Missing information")
-            console.log('Missing information')
+            alert("Missing information");
+            return;
         }
-    }
+
+        try {
+            await addTask({
+                title: name,
+                description: descriptionRef.current.value,
+                status: statusRef.current.value,
+            });
+
+            alert("Task created successfully!");
+
+            e.target.reset();
+            setName("");
+        } catch (error) {
+            alert(error.message);
+        }
+    };
 
     return (
         <>
@@ -46,7 +58,7 @@ export default function AddTask() {
                                 id="taskName"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                required />
+                            />
                             {name.trim() && !isNameValid && (
                                 <p style={{ color: isNameValid ? 'green' : 'red' }}>
                                     Input a valid username
@@ -68,7 +80,6 @@ export default function AddTask() {
                                 id="description"
                                 placeholder="Description"
                                 ref={descriptionRef}
-                                required
                                 className='form-control'
                             />
                         </div>
