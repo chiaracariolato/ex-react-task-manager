@@ -21,7 +21,7 @@ export default function Modal({
                         </div>
                         <div className="modal-footer">
                             {showCancel &&
-                                <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
+                                <button type="button" className="btn btn-outline-primary" onClick={onClose}>Cancel</button>
                             }
                             <button type="button" className="btn btn-primary" onClick={onConfirm}>{confirmText}</button>
                         </div>

@@ -61,7 +61,7 @@ export default function AddTask() {
                             />
                             {name.trim() && !isNameValid && (
                                 <p style={{ color: isNameValid ? 'green' : 'red' }}>
-                                    Input a valid username
+                                    Input a valid name
                                 </p>)}
                         </div>
 

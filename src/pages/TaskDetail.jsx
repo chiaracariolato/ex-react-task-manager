@@ -2,9 +2,10 @@ import { useContext, useState, useEffect } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { useParams, useNavigate } from 'react-router-dom'
 import Modal from "../components/Modal";
+import EditTaskModal from "../components/EditTaskModal";
 
 export default function TaskDetail() {
-    const { tasks, removeTask } = useContext(GlobalContext);
+    const { tasks, removeTask, updateTask } = useContext(GlobalContext);
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -15,6 +16,8 @@ export default function TaskDetail() {
     const [showSuccess, setShowSuccess] = useState(false);
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const [showEdit, setShowEdit] = useState(false);
 
     useEffect(() => {
         if (!task && !showSuccess) {
@@ -40,6 +43,17 @@ export default function TaskDetail() {
         return null;
     }
 
+    async function handleSave(updatedTask) {
+
+        try {
+            await updateTask(updatedTask);
+            alert("Task edited succesfully");
+            setShowEdit(false);
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
     return (
         <div className="container">
             {task && (
@@ -59,9 +73,14 @@ export default function TaskDetail() {
                         <h5 className="card-title">{task.title}</h5>
                         <p className="card-text">{task.description}</p>
                         <p>{new Date(task.createdAt).toLocaleString("it-IT")}</p>
-                        <button className="btn btn-primary" onClick={() => setShow(true)}>
-                            Delete
-                        </button>
+                        <div className="d-flex justify-content-end gap-2">
+                            <button className="btn btn-outline-primary" onClick={() => setShow(true)}>
+                                Delete
+                            </button>
+                            <button className="btn btn-primary" onClick={() => setShowEdit(true)}>
+                                Edit
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
@@ -92,6 +111,13 @@ export default function TaskDetail() {
                 onConfirm={() => setShowError(false)}
                 confirmText="OK"
                 showCancel={false}
+            />
+
+            <EditTaskModal
+                show={showEdit}
+                onClose={() => setShowEdit(false)}
+                task={task}
+                onSave={handleSave}
             />
         </div>
     )

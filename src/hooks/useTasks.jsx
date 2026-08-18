@@ -23,7 +23,7 @@ function useTasks() {
                 title,
                 description,
                 status,
-            }),
+            })
         });
 
         const data = await response.json();
@@ -39,7 +39,7 @@ function useTasks() {
 
     const removeTask = async (taskId) => {
         const response = await fetch(`${import.meta.env.VITE_BE_APP}/tasks/${taskId}`, {
-            method: "DELETE",
+            method: "DELETE"
         })
 
         const data = await response.json();
@@ -56,7 +56,35 @@ function useTasks() {
 
     };
 
-    const updateTask = () => { };
+    const updateTask = async (updatedTask) => {
+        console.log("TASK TO UPDATE:", updatedTask);
+        const response = await fetch(`${import.meta.env.VITE_BE_APP}/tasks/${updatedTask.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                title: updatedTask.title,
+                description: updatedTask.description,
+                status: updatedTask.status,
+            })
+        })
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === updatedTask.id ? data.task : task
+            )
+        );
+
+
+        return data.task;
+    };
 
     return {
         tasks,
