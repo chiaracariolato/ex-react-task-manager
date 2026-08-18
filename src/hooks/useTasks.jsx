@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
-import axios from "axios";
 
 function useTasks() {
 
     const [tasks, setTasks] = useState([]);
 
     const fetchTasks = () => {
-        axios.get(`${import.meta.env.VITE_BE_APP}/tasks`)
-            .then(response => setTasks(response.data))
+        fetch(`${import.meta.env.VITE_BE_APP}/tasks`)
+            .then(response => response.json())
+            .then(data => setTasks(data))
             .catch(error => console.error(error));
+        console.log("dati presi")
+        // Perchè stampa "Dati presi" due volte???
     }
 
     useEffect(fetchTasks, []);

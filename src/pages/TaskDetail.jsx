@@ -10,7 +10,7 @@ export default function TaskDetail() {
 
     const navigate = useNavigate();
 
-    const task = tasks.find(task => task.id == id);
+    const task = tasks.find(task => task.id == parseInt(id));
 
     const [show, setShow] = useState(false)
     const [showSuccess, setShowSuccess] = useState(false);

@@ -25,12 +25,6 @@ export default function EditTaskModal({
         e.preventDefault();
         if (!isNameValid) return;
 
-        console.log("FORM DATA:", {
-            ...task,
-            title,
-            description,
-            status,
-        });
         onSave({
             ...task,
             title,

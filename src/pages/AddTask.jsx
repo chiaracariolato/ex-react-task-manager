@@ -4,8 +4,8 @@ import { GlobalContext } from "../contexts/GlobalContext";
 export default function AddTask() {
 
     const [name, setName] = useState('');
-    const descriptionRef = useRef('');
-    const statusRef = useRef('To do');
+    const descriptionRef = useRef();
+    const statusRef = useRef();
 
     const { addTask } = useContext(GlobalContext);
 
@@ -68,10 +68,10 @@ export default function AddTask() {
 
                         <div className="col-md-6">
                             <label htmlFor="status" className="form-label">Status</label>
-                            <select className="form-select" id="status" ref={statusRef} required>
-                                <option>To do</option>
-                                <option>Doing</option>
-                                <option>Done</option>
+                            <select className="form-select" id="status" ref={statusRef} defaultValue="To do" required>
+                                <option value="To do">To do</option>
+                                <option value="Doing">Doing</option>
+                                <option value="Done">Done</option>
                             </select>
                         </div>
 
